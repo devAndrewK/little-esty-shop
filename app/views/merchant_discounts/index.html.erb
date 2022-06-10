@@ -1,8 +1,10 @@
 <h1>My Discounts</h1>
 <% @discounts.each do |discount| %>
-  <p>
-    Get <%= discount.percentage %> off when you buy
-    <%= discount.quantity %> units. 
-    <%= link_to "View", "/merchants/#{discount.merchant.id}/discounts/#{discount.id}" %>
-  </p>
+  <div id="discount-<%= discount.id %>">
+    <p>
+      Get <%= discount.percentage %>% off when you buy
+      <%= discount.quantity %> units. 
+      <%= link_to "View", "/merchants/#{discount.merchant.id}/discounts/#{discount.id}" %>
+    </p>
+  </div>
 <% end %>
