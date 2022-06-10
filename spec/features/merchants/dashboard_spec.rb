@@ -29,6 +29,12 @@ RSpec.describe "merchant dashboard", type: :feature do
     expect(page).to_not have_content("Klein, Rempel and Jones")
   end
 
+  it "has a link to discounts index" do
+    visit "/merchants/#{@merch_1.id}/dashboard"
+    click_link "My Discounts"
+    expect(current_path).to eq("/merchants/#{@merch_1.id}/discounts")
+  end
+
   it "has links to merchant items index and merchant invoices index" do
     visit "/merchants/#{@merch_1.id}/dashboard"
     
