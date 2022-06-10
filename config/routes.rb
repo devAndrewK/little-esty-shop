@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   end
 
   resources :merchants, only: [:show] do
+    resources :discounts, controller: :merchant_discounts
+  end
+
+  resources :merchants, only: [:show] do
     resources :invoices, only: [:index, :show], controller: :merchant_invoices
     resources :invoices, only: [:update], controller: :invoice_items
   end
