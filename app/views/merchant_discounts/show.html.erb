@@ -1,0 +1,4 @@
+<%= render partial: "shared/merchant_header", object: @discount.merchant, :as => :merchant %>
+<h1 align="center"> Discount: <%= @discount.id %></h1>
+<p>Percentage Off: <%= @discount.percentage %>%</p>
+<p>Quantity Needed: <%= @discount.quantity %></p>

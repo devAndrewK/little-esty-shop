@@ -37,7 +37,7 @@ RSpec.describe 'merchants discounts index', type: :feature do
       visit "/merchants/#{@merch_2.id}/discounts"
       within "#discount-#{@discount1.id}" do
         click_link "View"
-        expect(current_path.to eq("/merchants/#{discount.merchant.id}/discounts/#{@discount1.id}"))
+        expect(current_path).to eq("/merchants/#{@merch_2.id}/discounts/#{@discount1.id}")
       end
   end
 
