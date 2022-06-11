@@ -31,7 +31,14 @@ RSpec.describe 'merchants discounts index', type: :feature do
       expect(page).to have_content("Get 25% off when you buy 30 units.")
       expect(page).to have_link("View")
     end
+  end
 
+  it "links to discount show page" do
+      visit "/merchants/#{@merch_2.id}/discounts"
+      within "#discount-#{@discount1.id}" do
+        click_link "View"
+        expect(current_path.to eq("/merchants/#{discount.merchant.id}/discounts/#{@discount1.id}"))
+      end
   end
 
 

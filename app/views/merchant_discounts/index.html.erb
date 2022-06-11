@@ -1,5 +1,6 @@
+<%= render partial: "shared/merchant_header", object: @merchant, :as => :merchant  %>
 <h1>My Discounts</h1>
-<% @discounts.each do |discount| %>
+<% @merchant.discounts.each do |discount| %>
   <div id="discount-<%= discount.id %>">
     <p>
       Get <%= discount.percentage %>% off when you buy
