@@ -16,4 +16,14 @@ RSpec.describe 'merchants discounts edit', type: :feature do
     expect(page).to have_field('Percentage', with: 15)
     expect(page).to have_field('Quantity', with: 20)
   end
+
+    it 'can fill in fields and submit form' do
+    visit "/discounts/#{@discount1.id}/edit"
+    fill_in 'Percentage', with: 40
+    fill_in 'Quantity', with: 100
+    click_button "Update"
+    expect(current_path).to eq("/merchants/#{@merch_2.id}/discounts/#{@discount1.id}")
+    expect(page).to have_content("Percentage Off: 40%")
+    expect(page).to have_content("Quantity Needed: 100")
+  end
 end
