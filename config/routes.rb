@@ -9,8 +9,9 @@ Rails.application.routes.draw do
   end
 
   resources :merchants, only: [:show] do
-    resources :discounts, controller: :merchant_discounts
+    resources :discounts, only: [:index, :new, :create, :show], controller: :merchant_discounts
   end
+  resources :discounts, only: [:show, :edit, :update, :destroy], controller: :merchant_discounts
 
   resources :merchants, only: [:show] do
     resources :invoices, only: [:index, :show], controller: :merchant_invoices
