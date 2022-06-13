@@ -25,5 +25,8 @@ RSpec.describe 'merchants discounts edit', type: :feature do
     expect(current_path).to eq("/merchants/#{@merch_2.id}/discounts/#{@discount1.id}")
     expect(page).to have_content("Percentage Off: 40%")
     expect(page).to have_content("Quantity Needed: 100")
+    expect(page).to_not have_content("Quantity Needed: 20")
+    expect(page).to_not have_content("Percentage Off: 15%")
   end
+
 end
