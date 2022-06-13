@@ -3,6 +3,8 @@ class Invoice < ApplicationRecord
   has_many :transactions, dependent: :destroy
   has_many :invoice_items
   has_many :items, through: :invoice_items
+  has_many :merchants, through: :items
+  has_many :discounts, through: :merchants
 
   enum status: ['cancelled','in progress', 'completed']
 
@@ -10,6 +12,14 @@ class Invoice < ApplicationRecord
 
   def total_revenue
     invoice_items.sum("unit_price * quantity")
+  end
+
+  def discounted_revenue(merchant)
+    merchant.invoice_items.joins(:discounts)
+            .where('invoice_items.quantity >= discounts.quantity')
+            .select('invoice_items.id, max(invoice_items.quantity * invoice_items.unit_price * (discounts.percentage / 100.0)) as total_discount')
+            .group('invoice_items.id')
+            .sum(&:total_discount)
   end
 
   def self.incomplete_invoices_ordered
