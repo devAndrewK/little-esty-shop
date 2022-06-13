@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'merchants discounts edit', type: :feature do
+RSpec.describe 'merchants discounts delete', type: :feature do
   before(:each) do
     @merch_1 = Merchant.create!(name: "Two-Legs Fashion")
     @merch_2 = Merchant.create!(name: "Toys Rn't Us")
@@ -12,9 +12,13 @@ RSpec.describe 'merchants discounts edit', type: :feature do
   end
 
   it 'has pre-filled form fields to edit' do
-    visit "/discounts/#{@discount1.id}/edit"
-    expect(page).to have_field('Percentage', with: 15)
-    expect(page).to have_field('Quantity', with: 20)
+    visit "merchants/#{@merch_2.id}/discounts"
+    within "#discount-#{@discount1.id}" do
+      click_link "Delete"
+    end
+    expect(current_path).to eq("/merchants/#{@merch_2.id}/discounts")
+    expect(page).to_not have_content("Get 15% off")
+    expect(page).to_not have_content("when you buy 20 units.")
   end
 
   it 'can fill in fields and submit form' do
