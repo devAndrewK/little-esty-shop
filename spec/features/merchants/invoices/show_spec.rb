@@ -78,4 +78,26 @@ RSpec.describe "merchant's invoice show page", type: :feature do
         expect(page).to have_content('pending')
       end
   end
+
+  it "shows the discounted revenue" do
+    InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_1.id, quantity: 5, unit_price: @item_1.unit_price, status: 2)
+    InvoiceItem.create!(item_id: @item_2.id, invoice_id: @invoice_1.id, quantity: 10, unit_price: @item_2.unit_price, status: 2)
+    @merch_1.discounts.create!(percentage: 10, quantity: 5)
+    @merch_1.discounts.create!(percentage: 50, quantity: 10)
+
+    visit "/merchants/#{@merch_1.id}/invoices/#{@invoice_1.id}"
+    expect(page).to have_content("Discounted Revenue: $175.00")
+  end
+
+    it "shows the discounted revenue as zero if no discount threshold is met" do
+    InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_1.id, quantity: 1, unit_price: @item_1.unit_price, status: 2)
+    InvoiceItem.create!(item_id: @item_2.id, invoice_id: @invoice_1.id, quantity: 1, unit_price: @item_2.unit_price, status: 2)
+    @merch_1.discounts.create!(percentage: 10, quantity: 5)
+    @merch_1.discounts.create!(percentage: 50, quantity: 10)
+
+    visit "/merchants/#{@merch_1.id}/invoices/#{@invoice_1.id}"
+    expect(page).to have_content("Discounted Revenue: $0.00")
+  end
+
+  
 end

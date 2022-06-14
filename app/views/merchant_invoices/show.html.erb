@@ -21,3 +21,4 @@
 <% end %>
 
 Total Revenue: $<%= ('%.2f' % @invoice.total_revenue.fdiv(100)) %>
+Discounted Revenue: $<%= ('%.2f' % @invoice.discounted_revenue(@invoice.merchant_object(params[:merchant_id])).fdiv(100)) %>
