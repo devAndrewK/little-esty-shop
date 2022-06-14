@@ -85,17 +85,17 @@ RSpec.describe "merchant's invoice show page", type: :feature do
     InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_1.id, quantity: 5, unit_price: @item_1.unit_price, status: 2)
     InvoiceItem.create!(item_id: @item_2.id, invoice_id: @invoice_1.id, quantity: 10, unit_price: @item_2.unit_price, status: 2)
     visit "/merchants/#{@merch_1.id}/invoices/#{@invoice_1.id}"
-    expect(page).to have_content("Discounted Revenue: $175.00")
+    expect(page).to have_content("Discounted Revenue: $425.00")
   end
 
-  it "shows the discounted revenue as zero if no discount threshold is met" do
+  it "shows the discounted revenue as total revenue if no discount threshold is met" do
     @merch_1.discounts.create!(percentage: 10, quantity: 5)
     @merch_1.discounts.create!(percentage: 50, quantity: 10)
-    InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_1.id, quantity: 1, unit_price: @item_1.unit_price, status: 2)
-    InvoiceItem.create!(item_id: @item_2.id, invoice_id: @invoice_1.id, quantity: 1, unit_price: @item_2.unit_price, status: 2)
+    InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_6.id, quantity: 1, unit_price: @item_1.unit_price, status: 2)
+    InvoiceItem.create!(item_id: @item_2.id, invoice_id: @invoice_6.id, quantity: 1, unit_price: @item_2.unit_price, status: 2)
 
-    visit "/merchants/#{@merch_1.id}/invoices/#{@invoice_1.id}"
-    expect(page).to have_content("Discounted Revenue: $0.00")
+    visit "/merchants/#{@merch_1.id}/invoices/#{@invoice_6.id}"
+    expect(page).to have_content("Discounted Revenue: $80.00")
   end
 
   it "has a view discount link next to invoice items with discounts" do
