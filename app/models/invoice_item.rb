@@ -9,4 +9,17 @@ class InvoiceItem < ApplicationRecord
   enum status: ['packaged', 'pending', 'shipped']
 
   validates :status, inclusion: { in: statuses.keys }
+
+  before_create :discount_applied
+
+  def discount_applied
+    greatest_discount = discounts.where('discounts.quantity <= ?', quantity)
+    .select('discounts.id, max(discounts.percentage)')
+    .group('discounts.id')
+    .first
+
+    if !greatest_discount.nil?
+      self.discount_id = greatest_discount.id
+    end
+  end
 end
