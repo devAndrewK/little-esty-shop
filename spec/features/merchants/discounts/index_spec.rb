@@ -43,7 +43,12 @@ RSpec.describe 'merchants discounts index', type: :feature do
 
   it 'lists the next 3 holidays' do
     visit "/merchants/#{@merch_2.id}/discounts"
-    save_and_open_page
+    expect(page).to have_content("Upcoming Holidays:")
+    expect(page).to have_content("Juneteenth")
+    expect(page).to have_content("Independence Day")
+    expect(page).to have_content("Labor Day")
+    expect(page).to_not have_content("Columbus Day")
+    expect(page).to_not have_content("Thanksgiving")
   end
 
 

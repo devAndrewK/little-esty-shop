@@ -22,6 +22,8 @@
 @cust_6 = Customer.create!(first_name: "Bronson", last_name: "Shmonson")
 @cust_7 = Customer.create!(first_name: "Anten", last_name: "Branden")
 
+@merch_1.discounts.create(percentage: 10, quantity: 30)
+
 @invoice_1 = @cust_1.invoices.create!(status: 1)
 @invoice_2 = @cust_1.invoices.create!(status: 1)
 @invoice_3 = @cust_1.invoices.create!(status: 1)
