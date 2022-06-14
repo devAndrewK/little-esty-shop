@@ -14,12 +14,18 @@ class Invoice < ApplicationRecord
     invoice_items.sum("unit_price * quantity")
   end
 
-  def discounted_revenue(merchant)
-    merchant.invoice_items.joins(:discounts)
+  def invoice_discounts(merchant)
+     merchant.invoice_items.joins(:discounts)
+            .where('invoice_items.invoice_id = ?', self.id)
             .where('invoice_items.quantity >= discounts.quantity')
             .select('invoice_items.id, max(invoice_items.quantity * invoice_items.unit_price * (discounts.percentage / 100.0)) as total_discount')
             .group('invoice_items.id')
             .sum(&:total_discount)
+  end
+
+  def discounted_revenue
+    discount = merchants.uniq.sum { |merchant| invoice_discounts(merchant) }
+    total_revenue - discount
   end
 
   def self.incomplete_invoices_ordered

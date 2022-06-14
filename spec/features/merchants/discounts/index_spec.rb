@@ -41,5 +41,10 @@ RSpec.describe 'merchants discounts index', type: :feature do
       end
   end
 
+  it 'lists the next 3 holidays' do
+    visit "/merchants/#{@merch_2.id}/discounts"
+    save_and_open_page
+  end
+
 
 end

@@ -64,7 +64,7 @@ RSpec.describe Invoice do
       ii_2 = InvoiceItem.create!(item_id: item_2.id, invoice_id: invoice_1.id, quantity: 5, unit_price: item_2.unit_price, status: 0)
       discount = merch_1.discounts.create!(percentage: 50, quantity:10)
       discount2 = merch_1.discounts.create!(percentage: 10, quantity:5)
-      expect(invoice_1.discounted_revenue(merch_1)).to eq(25500)
+      expect(invoice_1.discounted_revenue).to eq(29500)
     end
   end
 end

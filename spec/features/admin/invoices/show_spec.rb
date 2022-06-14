@@ -77,12 +77,23 @@ RSpec.describe 'Admin invoices show page' do
 
   it 'displays total revenue for invoice' do
     merch_1 = Merchant.create!(name: "Two-Legs Fashion")
+    merch_2 = Merchant.create!(name: "Fashion")
+    
 
     item_1 = merch_1.items.create!(name: "Two-Leg Pantaloons", description: "pants built for people with two legs", unit_price: 3499)
     InvoiceItem.create!(item_id: item_1.id, invoice_id: @invoice_1.id, quantity: 3, unit_price: item_1.unit_price, status: 2)
     visit "/admin/invoices/#{@invoice_1.id}"
 
     expect(page).to have_content("Total Revenue: $154.97")
+  end
+
+  it 'displays discounted revenue' do
+    item_1 = @merch_1.items.create!(name: "Two-Leg Pantaloons", description: "pants built for people with two legs", unit_price: 4000)
+    @merch_1.discounts.create!(percentage: 33, quantity: 12)
+    InvoiceItem.create!(item_id: item_1.id, invoice_id: @invoice_1.id, quantity: 12, unit_price: item_1.unit_price, status: 2)
+    visit "/admin/invoices/#{@invoice_1.id}"
+
+    expect(page).to have_content("Discounted Revenue: $371.60")
   end
 
   it "has a select menu for the invoice status and you can update the status" do
