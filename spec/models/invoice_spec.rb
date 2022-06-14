@@ -53,5 +53,18 @@ RSpec.describe Invoice do
       expect(item_2.merchant).to eq(merch_1)
       expect(item_3.merchant).to eq(merch_2)
     end
+
+    it 'can return discounted_revenue' do
+      merch_1 = Merchant.create!(name: "Two-Legs Fashion")
+      item_1 = merch_1.items.create!(name: "Two-Leg Pantaloons", description: "pants built for people with two legs", unit_price: 5000)
+      item_2 = merch_1.items.create!(name: "Two-Leg Pantaloons", description: "pants built for people with two legs", unit_price: 1000)
+      cust_1 = Customer.create!(first_name: "Debbie", last_name: "Twolegs")
+      invoice_1 = cust_1.invoices.create!(status: 1, created_at: "2022-06-03 17:51:52")
+      ii_1 = InvoiceItem.create!(item_id: item_1.id, invoice_id: invoice_1.id, quantity: 10, unit_price: item_1.unit_price, status: 0)
+      ii_2 = InvoiceItem.create!(item_id: item_2.id, invoice_id: invoice_1.id, quantity: 5, unit_price: item_2.unit_price, status: 0)
+      discount = merch_1.discounts.create!(percentage: 50, quantity:10)
+      discount2 = merch_1.discounts.create!(percentage: 10, quantity:5)
+      expect(invoice_1.discounted_revenue(merch_1)).to eq(25500)
+    end
   end
 end

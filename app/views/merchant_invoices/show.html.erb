@@ -14,10 +14,14 @@
       <%= form.label :ii_status, "Status: "%>
       <%= form.select :ii_status, ["packaged", "pending", "shipped"], selected: ii.status %>
       <%= form.submit "Update Invoice" %>
+      <% if !ii.discount_id.nil? %>
+        <p><%= link_to "View Discount Applied", "/discounts/#{ii.discount_id}" %></p>
+      <% end %>
       <% end %>
     </div>
     <br><br>
   <% end %>
 <% end %>
 
-Total Revenue: $<%= ('%.2f' % @invoice.total_revenue.fdiv(100)) %>
+<p>Total Revenue: $<%= ('%.2f' % @invoice.total_revenue.fdiv(100)) %></p>
+<p>Discounted Revenue: $<%= ('%.2f' % @invoice.discounted_revenue(@invoice.merchant_object(params[:merchant_id])).fdiv(100)) %></p>
