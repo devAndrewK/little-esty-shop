@@ -1,4 +1,5 @@
 class MerchantDiscountsController < ApplicationController
+  before_action :get_upcoming_holidays, only: [:index]
   def index
     @merchant = Merchant.find(params[:merchant_id])
   end
@@ -26,5 +27,9 @@ class MerchantDiscountsController < ApplicationController
   private
     def discount_params
       params.require(:discount).permit(:percentage, :quantity)
+    end
+
+    def get_upcoming_holidays
+      @holidays = HolidaySearch.holiday_information
     end
 end
